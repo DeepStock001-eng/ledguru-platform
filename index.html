@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LedGuru Lighting Inc. | 大多伦多持牌 Master Electrician 电气与报价平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <!-- 顶栏资讯 -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-2">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <span>⚡ ECRA/ESA License #7012013 | Master Electrician 亲自把关</span>
+            <a href="tel:6472869966" class="text-amber-400 font-bold">📞 647-286-9966</a>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="text-2xl font-black text-slate-900">
+                Led<span class="text-amber-500">Guru</span> <span class="text-xs font-normal text-sky-600">Electrical Platform</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLang()" class="px-3 py-1.5 text-xs font-bold border border-slate-300 rounded-full hover:bg-slate-100">
+                    🌐 <span id="lang-text">English</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 核心业务流：智能报价与方案生成系统 -->
+    <section class="py-12 max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+            <div class="bg-sky-900 text-white p-6 sm:p-8">
+                <h1 class="text-2xl sm:text-3xl font-black mb-2" data-zh="在线电工服务智能报价与方案系统" data-en="Smart Electrical Estimate & Solution Portal">在线电工服务智能报价与方案系统</h1>
+                <p class="text-sky-200 text-sm" data-zh="几步轻松获取预估报价、专家实施方案，并可选择 LedGuru 专家团队或入驻承包商竞价。" data-en="Get instant estimate, expert solution, and choose LedGuru professional team or contractor bids.">几步轻松获取预估报价、专家实施方案，并可选择 LedGuru 专家团队或入驻承包商竞价。</p>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6">
+                <!-- 第一步：选择服务类型 -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-900 mb-2" data-zh="1. 选择您的电气工程服务项目" data-en="1. Select Your Electrical Project">1. 选择您的电气工程服务项目</label>
+                    <select id="service-type" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        <option value="1500" data-zh="配电盘升级 (100A 升 200A)" data-en="Panel Upgrade (100A to 200A)">配电盘升级 (100A 升 200A)</option>
+                        <option value="800" data-zh="Tesla / EV 充电桩安装" data-en="EV Charger Installation">Tesla / EV 充电桩安装</option>
+                        <option value="1200" data-zh="全屋 LED 筒灯与智能照明改造" data-en="Smart Recessed Lighting">全屋 LED 筒灯与智能照明改造</option>
+                        <option value="2000" data-zh="老旧电路/铝线(Aluminum)排查与安全修复" data-en="Wiring Remediation">老旧电路/铝线(Aluminum)排查与安全修复</option>
+                    </select>
+                </div>
+
+                <!-- 第二步：填写项目简述 -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-900 mb-2" data-zh="2. 描述您的房屋状况与具体需求（例如：建成年份、当前电箱安培数等）" data-en="2. Describe your project requirements">2. 描述您的房屋状况与具体需求</label>
+                    <textarea rows="3" placeholder="例如：1985年建独立屋，目前是100A进线，计划加装特斯拉充电桩和热泵，需要升级到200A..." class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+                </div>
+
+                <!-- 第三步：联系方式与会员权益解锁 -->
+                <div class="p-5 bg-amber-50 rounded-xl border border-amber-200">
+                    <h3 class="text-sm font-bold text-amber-900 mb-3" data-zh="🔒 填写联系方式以解锁：初步报价、专家方案及会员权益" data-en="🔒 Enter contact details to unlock estimate, expert plan & member benefits">🔒 填写联系方式以解锁：初步报价、专家方案及会员权益</h3>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <input type="text" placeholder="您的姓名 / Name" class="p-3 bg-white border border-slate-300 rounded-lg text-sm">
+                        <input type="tel" placeholder="联系电话 / Phone Number" class="p-3 bg-white border border-slate-300 rounded-lg text-sm">
+                    </div>
+                </div>
+
+                <!-- 第四步：附加选项（承包商竞价） -->
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="bidding" class="w-4 h-4 text-sky-600 rounded">
+                    <label for="bidding" class="text-sm text-slate-700" data-zh="同时邀请 LedGuru 认证的第三方电工承包商会员参与报价竞价，获取更多合理的方案选择" data-en="Also invite certified contractor members to bid for competitive options">同时邀请 LedGuru 认证的第三方电工承包商会员参与报价竞价，获取更多合理的方案选择</label>
+                </div>
+
+                <!-- 提交按钮 -->
+                <button onclick="alert('您的需求已提交成功！LedGuru 专家系统与电工专家将为您生成初步报价与实施方案，随后与您联系。')" class="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl shadow-lg transition text-base" data-zh="🚀 获取初步报价与专业实施方案" data-en="🚀 Get Instant Estimate & Solution">
+                    🚀 获取初步报价与专业实施方案
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 双语切换脚本 -->
+    <script>
+        let lang = 'zh';
+        function toggleLang() {
+            lang = lang === 'zh' ? 'en' : 'zh';
+            document.getElementById('lang-text').innerText = lang === 'zh' ? 'English' : '中文';
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                const txt = el.getAttribute(`data-${lang}`);
+                if(txt) el.innerText = txt;
+            });
+        }
+    </script>
+</body>
+</html>
