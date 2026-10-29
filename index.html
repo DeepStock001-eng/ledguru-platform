@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LedGuru Lighting Inc. | 多伦多持牌 Master Electrician 智能电气服务平台</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Supabase 客户端库 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased pb-16">
 
@@ -84,7 +86,7 @@
                     </div>
                 </div>
 
-                <!-- 模块 2：项目细节与联系方式解锁方案 -->
+                <!-- 模块 2：项目细节与联系方式 -->
                 <div class="space-y-4 pt-4 border-t border-slate-100">
                     <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-800 text-xs flex items-center justify-center font-black">2</span>
@@ -92,31 +94,31 @@
                     </h2>
 
                     <div>
-                        <textarea rows="3" placeholder="请简述房屋类型（如独立屋/半独立）、房屋建造年份以及具体要求..." class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+                        <textarea id="reqDesc" rows="3" placeholder="请简述房屋类型（如独立屋/半独立）、房屋建造年份以及具体要求..." class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
                     </div>
 
                     <div class="grid sm:grid-cols-2 gap-4">
-                        <input type="text" required placeholder="您的姓名 *" class="p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
-                        <input type="tel" required placeholder="联系电话 *" class="p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        <input type="text" id="clientName" required placeholder="您的姓名 *" class="p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        <input type="tel" id="clientPhone" required placeholder="联系电话 *" class="p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
                     </div>
-                    <input type="email" placeholder="电子邮箱（用于接收正式报价书单与施工方案）" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                    <input type="email" id="clientEmail" placeholder="电子邮箱（用于接收正式报价书单与施工方案）" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 outline-none">
                 </div>
 
-                <!-- 模块 3：深度资料上传（图片/视频）与模式选择 -->
+                <!-- 模块 3：现场资料上传与服务模式 -->
                 <div class="space-y-4 pt-4 border-t border-slate-100">
                     <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-800 text-xs flex items-center justify-center font-black">3</span>
                         <span data-zh="现场照片上传与服务模式" data-en="Photos Upload & Service Option">现场照片上传与服务模式</span>
                     </h2>
 
-                    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
+                    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50 hover:bg-slate-100 transition cursor-pointer" onclick="document.getElementById('fileInput').click()">
                         <div class="text-2xl mb-1">📸</div>
-                        <div class="text-xs font-bold text-slate-700" data-zh="点击或拖拽上传配电盘/施工现场照片或视频" data-en="Click or drag photos/videos of your electric panel">点击或拖拽上传配电盘/施工现场照片或视频</div>
-                        <div class="text-[10px] text-slate-400 mt-1" data-zh="上传清晰的照片有助于专家做出精度 95%+ 的正式报价" data-en="Clear photo helps us provide a 95%+ accurate quote">上传清晰的照片有助于专家做出精度 95%+ 的正式报价</div>
-                        <input type="file" multiple class="hidden" id="fileInput">
+                        <div class="text-xs font-bold text-slate-700" data-zh="点击选择或上传配电盘/施工现场照片" data-en="Click to select photos of your electric panel">点击选择或上传配电盘/施工现场照片</div>
+                        <div id="fileStatus" class="text-[10px] text-slate-400 mt-1" data-zh="支持多图上传，助力专家快速精确报价" data-en="Support multiple photos for accurate quote">支持多图上传，助力专家快速精确报价</div>
+                        <input type="file" multiple class="hidden" id="fileInput" onchange="updateFileCount()">
                     </div>
 
-                    <!-- 竞价还是直营 -->
+                    <!-- 模式选择 -->
                     <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="radio" name="bid_option" value="direct" checked class="text-amber-600">
@@ -129,7 +131,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow-lg transition text-base" data-zh="🚀 提交工程需求并获取专业方案与正式报价" data-en="🚀 Submit Requirements & Request Formal Contract">
+                <button type="submit" id="submitBtn" class="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow-lg transition text-base" data-zh="🚀 提交工程需求并获取专业方案与正式报价" data-en="🚀 Submit Requirements & Request Formal Contract">
                     🚀 提交工程需求并获取专业方案与正式报价
                 </button>
             </form>
@@ -137,7 +139,12 @@
     </main>
 
     <script>
-        // 动态价格计算
+        // Supabase 配置参数
+        const SUPABASE_URL = 'https://pntsrmfqtvxebembczwx.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_arJ0MiughCVia4Yyw0pDug_Cw68o2VL'; // “您可以把刚刚复制的 publishable key 完整粘贴在这里”
+        
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const prices = {
             panel: '$1,800 - $3,200 CAD',
             ev: '$700 - $1,400 CAD',
@@ -150,9 +157,82 @@
             document.getElementById('priceDisplay').innerText = prices[selected];
         }
 
-        function handleFormSubmit(e) {
+        function updateFileCount() {
+            const files = document.getElementById('fileInput').files;
+            if(files.length > 0) {
+                document.getElementById('fileStatus').innerText = `已选择 ${files.length} 个文件准备上传`;
+                document.getElementById('fileStatus').className = 'text-[10px] text-emerald-600 font-bold mt-1';
+            }
+        }
+
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            alert('需求已成功提交！我们的智能引擎与 Master Electrician 专家正在为您整理正式实施方案与工程合同草案，稍后将通过电话/邮箱与您联系。');
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = '⏳ 正在加密上传数据与照片至云端...';
+
+            try {
+                const serviceType = document.querySelector('input[name="service"]:checked').value;
+                const estPrice = document.getElementById('priceDisplay').innerText;
+                const requirements = document.getElementById('reqDesc').value;
+                const name = document.getElementById('clientName').value;
+                const phone = document.getElementById('clientPhone').value;
+                const email = document.getElementById('clientEmail').value;
+                const serviceOption = document.querySelector('input[name="bid_option"]:checked').value;
+                const files = document.getElementById('fileInput').files;
+
+                let photoUrls = [];
+
+                // 1. 如果有上传照片，先传到 Supabase Storage
+                if (files.length > 0) {
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        const fileName = `${Date.now()}_${file.name}`;
+                        const { data, error } = await supabaseClient.storage
+                            .from('site-photos')
+                            .upload(fileName, file);
+
+                        if (error) throw error;
+
+                        // 获取公开访问 URL
+                        const { data: publicURL } = supabaseClient.storage
+                            .from('site-photos')
+                            .getPublicUrl(fileName);
+
+                        photoUrls.push(publicURL.publicUrl);
+                    }
+                }
+
+                // 2. 将表单数据写入 quotes 数据表
+                const { error: dbError } = await supabaseClient
+                    .from('quotes')
+                    .insert([
+                        {
+                            service_type: serviceType,
+                            estimated_price: estPrice,
+                            requirements: requirements,
+                            client_name: name,
+                            client_phone: phone,
+                            client_email: email,
+                            service_option: serviceOption,
+                            photo_urls: photoUrls
+                        }
+                    ]);
+
+                if (dbError) throw dbError;
+
+                alert('🎉 提交成功！您的项目需求、照片与方案已成功录入 LedGuru 云端专家系统，我们将尽快与您联系！');
+                document.getElementById('quoteForm').reset();
+                document.getElementById('fileStatus').innerText = '支持多图上传，助力专家快速精确报价';
+                calculateEstimate();
+
+            } catch (err) {
+                console.error(err);
+                alert('提交过程中出现小插意：' + err.message + '\n请检查网络或稍后重试。');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = '🚀 提交工程需求并获取专业方案与正式报价';
+            }
         }
 
         // 双语切换
